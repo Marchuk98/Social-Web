@@ -1,0 +1,12 @@
+.nav {
+    grid-area: n;
+    background-color: #b35cf1;
+}
+
+.nav a {
+
+}
+
+.item {
+    color: white;
+}
