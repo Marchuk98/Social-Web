@@ -1,37 +1,45 @@
 import React from "react";
 import s from './Dialogs.module.css'
-import {NavLink} from 'react-router-dom'
-import state from "../../redux/state";
+import {DialogItem} from "./DialogsItems/DialogItem";
+import {DialogPageType} from "../../redux/state";
+import MessageItem from "./MessageItem/MessageItem";
 
-const DialogItem = () => {
-    return  <div className={s.dialog + ' ' + s.active}>
-        {state.dialogsPage.dialogs.map(d => {
-            return(
-                <NavLink key={d.id} className={s.dialogsItems} to={"/dialogs/1" + d.id }>{d.name}</NavLink>
-            );
-        })}
-    </div>
+
+
+type DialogsPropsType = {
+    state: DialogPageType
 }
 
-const Message = () => {
-    return  <div className={s.message}>
-        {state.dialogsPage.message.map(m => {
-            return(
-                <div key={m.id}>{m.message}</div>
-            );
-        })}
-    </div>
-}
 
-const Dialogs = () => {
+const Dialogs: React.FC<DialogsPropsType> = (props) => {
+
+    const DialogsElement = props.state.dialogs.map(d => <DialogItem id={d.id} name={d.name}/>)
+    const MessageElement = props.state.message.map(m => <MessageItem id={m.id} message={m.message}/>)
+
+
+
+
+
+    const NewDialogElement = React.createRef<HTMLTextAreaElement>();
+    const addDialog = () => {
+        let text = NewDialogElement.current?.value
+        alert(text);
+    }
+
+
+
+
     return (
         <div className={s.dialogs}>
             <div>
-                <DialogItem/>
+                {DialogsElement}
             </div>
             <div className={s.messages}>
-                <Message/>
+                {MessageElement}
+                <textarea ref={NewDialogElement}></textarea>
+                <button onClick={addDialog}>add Dialog</button>
             </div>
+
         </div>
     );
 }
