@@ -1,26 +1,28 @@
 import React from "react";
 import s from "./Post.module.css"
-import state from "../../../../redux/state";
+
+type PostPropsType = {
+    message: string
+    likesCount: number
+}
 
 
-const Post = () => {
+const Post: React.FC<PostPropsType> = (props) => {
     return (
         <div className={s.item}>
-            <ul className={s.itemElement}>
-                {state.profilePage.post.map(p=>{
-                    return(
-                        <li key={p.id}>
-                            <img src={p.img} alt={""}/>
-                            <span>{p.message}</span>
-                            <span>{p.likesCount}</span>
-                        </li>
-                    );
-                })}
-            </ul>
+
+            <img src="https://i.pinimg.com/originals/79/ad/65/79ad652555114fa87f3ce10f96de59ee.jpg"
+                 alt='Avatar'/>
+            {props.message}
+            <div>
+                <span>Likes:</span>{props.likesCount}
+            </div>
         </div>
     );
 }
 
 export default Post;
+
+
 
 
