@@ -1,43 +1,44 @@
-type MessagePropsType = {
+import {renderTree} from "../render";
+
+export type MessageType = {
     id:number
     message:string
 }
-type DialogPropsType = {
+export type DialogType = {
     id:number
     name:string
 }
-type PostPropsType = {
+export type PostType = {
     id:number
-    img:string
     message:string
     likesCount: number
 }
 
-type ProfilePagePropsType = {
-    post: Array<PostPropsType>
+export type ProfilePageType = {
+    post: Array<PostType>
 }
 
-type DialogPagePropsType = {
-    dialogs: Array<DialogPropsType>
-    message: Array<MessagePropsType>
+export type DialogPageType = {
+    dialogs: Array<DialogType>
+    message: Array<MessageType>
 }
 
-type SidebarType = {}
+export type SidebarType = {}
 
-type RootStatePropsType = {
-    profilePage:ProfilePagePropsType
-    dialogsPage:DialogPagePropsType
+export type RootStatePropsType = {
+    profilePage:ProfilePageType
+    dialogsPage:DialogPageType
     sidebar:SidebarType
 }
 
 
-let state:RootStatePropsType = {
+export let state:RootStatePropsType = {
     profilePage: {
         post: [
-            {id: 1,img:'https://messenge.ru/wp-content/uploads/2021/07/06.07.2021-46.jpg', message: 'Hi, how are you?', likesCount: 32},
-            {id: 2,img:'https://messenge.ru/wp-content/uploads/2021/07/06.07.2021-46.jpg', message: 'It\'s my first post', likesCount: 45},
-            {id: 3,img:'https://messenge.ru/wp-content/uploads/2021/07/06.07.2021-46.jpg', message: 'Hybrid theory', likesCount: 23},
-            {id: 4,img:'https://messenge.ru/wp-content/uploads/2021/07/06.07.2021-46.jpg', message: 'To be continued', likesCount: 75}
+            {id: 1, message: 'Hi, how are you?', likesCount: 32},
+            {id: 2, message: 'It\'s my first post', likesCount: 45},
+            {id: 3, message: 'Hybrid theory', likesCount: 23},
+            {id: 4, message: 'To be continued', likesCount: 75}
         ]
     },
 
@@ -61,6 +62,17 @@ let state:RootStatePropsType = {
         ]
     },
         sidebar: {}
+}
+
+export const addPost = (postMessage:string) => {
+    const newPost: PostType ={
+        id: new Date().getTime(),
+        message: postMessage,
+        likesCount: 5
+    }
+    state.profilePage.post.push(newPost);
+
+    renderTree(state, addPost);
 }
 
 export default state;
