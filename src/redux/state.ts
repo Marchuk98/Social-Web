@@ -1,10 +1,6 @@
-let renderEntireTree = () => {
-    console.log('State is change');
-}
-
-export const subscribe = (observer: () => void) => {
-    renderEntireTree = observer;
-}
+import profileReducer, {addPostAC, UpdateNewPostAC} from "./profile-reducer";
+import dialogsReducer, {SendMessageAC, UpdateNewMessageAC} from "./dialogs-reducer";
+import sidebarReducer from "./sidebar-reducer";
 
 export type MessageType = {
     id: number
@@ -28,6 +24,7 @@ export type ProfilePageType = {
 export type DialogPageType = {
     dialogs: Array<DialogType>
     message: Array<MessageType>
+    newMessageBody: string
 }
 
 export type SidebarType = {}
@@ -39,57 +36,74 @@ export type RootStatePropsType = {
 }
 
 
-export let state: RootStatePropsType = {
-    profilePage: {
-        post: [
-            {id: 1, message: 'Hi, how are you?', likesCount: 32},
-            {id: 2, message: 'It\'s my first post', likesCount: 45},
-            {id: 3, message: 'Hybrid theory', likesCount: 23},
-            {id: 4, message: 'To be continued', likesCount: 75}
-        ],
-        newPostText: 'it-kamasutra.com'
+export type StoreType = {
+    _state: RootStatePropsType
+    _renderEntireTree: () => void
+    subscribe: (observer: () => void) => void
+    getState: () => RootStatePropsType
+    dispatch: (action: ActionTypeAC) => void
+}
+
+export type ActionTypeAC =
+    | ReturnType<typeof addPostAC>
+    | ReturnType<typeof UpdateNewPostAC>
+    | ReturnType<typeof UpdateNewMessageAC>
+    | ReturnType<typeof SendMessageAC>
+
+
+export const store: StoreType = {
+    _renderEntireTree() {
+    },
+    _state: {
+        profilePage: {
+            post: [
+                {id: 1, message: 'Hi, how are you?', likesCount: 32},
+                {id: 2, message: 'It\'s my first post', likesCount: 45},
+                {id: 3, message: 'Hybrid theory', likesCount: 23},
+                {id: 4, message: 'To be continued', likesCount: 75}
+            ],
+            newPostText: 'it-kamasutra.com'
+        },
+        dialogsPage: {
+            dialogs: [
+                {id: 1, name: 'Vladimir'},
+                {id: 2, name: 'Ekaterina'},
+                {id: 3, name: 'Alexander'},
+                {id: 4, name: 'Victor'},
+                {id: 5, name: 'Victoria'},
+                {id: 6, name: 'Olga'},
+                {id: 7, name: 'Svetlana'}
+            ],
+            message: [
+                {id: 1, message: 'Hello'},
+                {id: 2, message: 'How are your'},
+                {id: 3, message: 'Normal'},
+                {id: 4, message: 'Yo'},
+                {id: 5, message: 'What'}
+
+            ],
+            newMessageBody: "Text"
+        },
+        sidebar: {}
     },
 
-    dialogsPage: {
-        dialogs: [
-            {id: 1, name: 'Vladimir'},
-            {id: 2, name: 'Ekaterina'},
-            {id: 3, name: 'Alexander'},
-            {id: 4, name: 'Victor'},
-            {id: 5, name: 'Victoria'},
-            {id: 6, name: 'Olga'},
-            {id: 7, name: 'Svetlana'}
-        ],
-        message: [
-            {id: 1, message: 'Hello'},
-            {id: 2, message: 'How are your'},
-            {id: 3, message: 'Normal'},
-            {id: 4, message: 'Yo'},
-            {id: 5, message: 'What'}
-
-        ]
+    getState() {
+        return this._state;
     },
-    sidebar: {}
-}
+    dispatch(action) {
 
-export const addPost = () => {
-    const newPost: PostType = {
-        id: new Date().getTime(),
-        message: state.profilePage.newPostText,
-        likesCount: 5
-    }
-    state.profilePage.post.push(newPost);
-    state.profilePage.newPostText = '';
+        this._state.profilePage = profileReducer(this._state.profilePage, action);
+        this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action);
+        this._state.sidebar = sidebarReducer(this._state.sidebar, action);
 
-    renderEntireTree();
-}
+        this._renderEntireTree();
 
-export const updateNewPostText = (newText: string) => {
-    state.profilePage.newPostText = newText;
-    renderEntireTree();
-}
+    },
+    subscribe(observer) {
+        this._renderEntireTree = observer;
+    },
+};
 
-// store
 
 
 
