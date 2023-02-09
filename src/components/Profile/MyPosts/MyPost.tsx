@@ -1,31 +1,31 @@
-import React, {ChangeEvent} from "react";
+import React from "react";
 import s from "./MyPost.module.css"
 import Post from "./Post/Post";
-import {PostType} from "../../../redux/state";
+import {ActionTypeAC, ProfilePageType} from "../../../redux/state";
+import {addPostAC, UpdateNewPostAC} from "../../../redux/profile-reducer";
 
 
 type MyPostPropsType = {
-    post: Array<PostType>
-    newPostText:string
-    addPost:() => void
-    updateNewPostText:(newText:string) => void
+    dispatch:(action:ActionTypeAC)=> void
+    state:ProfilePageType
 }
 
 const MyPost: React.FC<MyPostPropsType> = (props)=> {
 
 
-    const postElement = props.post.map(p => <Post key={p.id} message={p.message} likesCount={p.likesCount}/>)
+    const postElement = props.state.post.map(p => <Post key={p.id} message={p.message} likesCount={p.likesCount}/>)
 
-    let NewPostElement = React.createRef<HTMLTextAreaElement>();
+    let newPostElement = React.createRef<HTMLTextAreaElement>();
 
     const addPost = () => {
-
-        if(NewPostElement.current){
-            props.addPost()
-        }
+        props.dispatch(addPostAC());
     }
-    const onChangePostTextArea = (e:ChangeEvent<HTMLTextAreaElement>) => {
-            props.updateNewPostText(e.currentTarget.value);
+    const onChangePostTextArea = () => {
+            if(newPostElement.current){
+                let text = newPostElement.current.value;
+                props.dispatch(UpdateNewPostAC(text));
+                newPostElement.current.value = "";
+            }
         }
 
     return (
@@ -33,7 +33,7 @@ const MyPost: React.FC<MyPostPropsType> = (props)=> {
             My post
             <div>
                 <div>
-                    <textarea onChange={onChangePostTextArea} ref={NewPostElement} value={props.newPostText} />
+                    <textarea onChange={onChangePostTextArea} ref={newPostElement} value={props.state.newPostText} />
                 </div>
                 <div>
                     <button onClick={addPost}>add post</button>

@@ -1,13 +1,14 @@
 import React from "react";
 import s from './Dialogs.module.css'
 import {DialogItem} from "./DialogsItems/DialogItem";
-import {DialogPageType} from "../../redux/state";
+import {ActionTypeAC, DialogPageType} from "../../redux/state";
 import MessageItem from "./MessageItem/MessageItem";
-
+import {SendMessageAC, UpdateNewMessageAC} from "../../redux/dialogs-reducer";
 
 
 type DialogsPropsType = {
     state: DialogPageType
+    dispatch: (action: ActionTypeAC) => void
 }
 
 
@@ -17,17 +18,21 @@ const Dialogs: React.FC<DialogsPropsType> = (props) => {
     const MessageElement = props.state.message.map(m => <MessageItem key={m.id} id={m.id} message={m.message}/>)
 
 
-
-
-
     const NewDialogElement = React.createRef<HTMLTextAreaElement>();
-    const addDialog = () => {
-        let text = NewDialogElement.current?.value
-        alert(text);
+
+
+    const onSendMessageClick = () => {
+        props.dispatch(SendMessageAC());
+
     }
 
+    const onChangeTextAreaHandler = () => {
 
-
+        if (NewDialogElement.current) {
+            let text = NewDialogElement.current.value;
+            props.dispatch(UpdateNewMessageAC(text));
+        }
+    }
 
     return (
         <div className={s.dialogs}>
@@ -35,9 +40,17 @@ const Dialogs: React.FC<DialogsPropsType> = (props) => {
                 {DialogsElement}
             </div>
             <div className={s.messages}>
-                {MessageElement}
-                <textarea ref={NewDialogElement}></textarea>
-                <button onClick={addDialog}>add Dialog</button>
+                <div>{MessageElement}</div>
+                <div>
+                    <div><textarea value={props.state.newMessageBody}
+                                   onChange={onChangeTextAreaHandler}
+                                   placeholder={'Enter your message'} ref={NewDialogElement}></textarea></div>
+                    <div>
+                        <button onClick={onSendMessageClick}>Send Message</button>
+                    </div>
+                </div>
+
+
             </div>
 
         </div>
