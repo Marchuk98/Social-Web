@@ -8,17 +8,16 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
-import {RootStatePropsType} from "./redux/state";
+import {StoreType} from "./redux/state";
 
 
 type AppPropsType = {
-    state: RootStatePropsType
-    addPost:() => void
-    updateNewPostText:(newText:string)=> void
+    store:StoreType
 }
 
 
 const App: React.FC<AppPropsType>= (props) => {
+    let state = props.store.getState();
     return (
         <BrowserRouter>
             <div className='app-wrapper'>
@@ -26,9 +25,8 @@ const App: React.FC<AppPropsType>= (props) => {
                 <Navbar/>
                 <div className='app-wrapper-content'>
                     <Routes>
-                        <Route path="/" element={<Profile state={props.state.profilePage} addPost={props.addPost} updateNewPostText={props.updateNewPostText}/>} />
-                        <Route path='/profile' element={<Profile state={props.state.profilePage} addPost={props.addPost} updateNewPostText={props.updateNewPostText} />}/>
-                        <Route path='/dialogs' element={<Dialogs state={props.state.dialogsPage}/>}/>
+                        <Route path='/profile' element={<Profile state={state.profilePage} dispatch={props.store.dispatch.bind(props.store)} />}/>
+                        <Route path='/dialogs' element={<Dialogs state={state.dialogsPage} dispatch={props.store.dispatch.bind(props.store)}/>}/>
                         <Route path='/news' element={<News/>}/>
                         <Route path='/music' element={<Music/>}/>
                         <Route path='/settings' element={<Settings/>}/>
