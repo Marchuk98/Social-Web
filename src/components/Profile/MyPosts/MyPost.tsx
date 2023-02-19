@@ -1,31 +1,23 @@
-import React from "react";
+import React, {ChangeEvent} from "react";
 import s from "./MyPost.module.css"
 import Post from "./Post/Post";
-import {ActionTypeAC, ProfilePageType} from "../../../redux/state";
-import {addPostAC, UpdateNewPostAC} from "../../../redux/profile-reducer";
+import {PostType} from "../../../redux/profile-reducer";
 
 
 type MyPostPropsType = {
-    dispatch:(action:ActionTypeAC)=> void
-    state:ProfilePageType
+    addPost:()=> void
+    updateNewPostText:(newText: string)=>void
+    post:PostType[]
+    newPostText:string
 }
 
 const MyPost: React.FC<MyPostPropsType> = (props)=> {
 
-
-    const postElement = props.state.post.map(p => <Post key={p.id} message={p.message} likesCount={p.likesCount}/>)
-
-    let newPostElement = React.createRef<HTMLTextAreaElement>();
-
     const addPost = () => {
-        props.dispatch(addPostAC());
+            props.addPost();
     }
-    const onChangePostTextArea = () => {
-            if(newPostElement.current){
-                let text = newPostElement.current.value;
-                props.dispatch(UpdateNewPostAC(text));
-                newPostElement.current.value = "";
-            }
+    const onChangePostTextArea = (e:ChangeEvent<HTMLTextAreaElement>) => {
+        props.updateNewPostText(e.currentTarget.value)
         }
 
     return (
@@ -33,14 +25,14 @@ const MyPost: React.FC<MyPostPropsType> = (props)=> {
             My post
             <div>
                 <div>
-                    <textarea onChange={onChangePostTextArea} ref={newPostElement} value={props.state.newPostText} />
+                    <textarea onChange={onChangePostTextArea}  value={props.newPostText} />
                 </div>
                 <div>
                     <button onClick={addPost}>add post</button>
                 </div>
             </div>
             <div className={s.posts}>
-                {postElement}
+                {props.post.map(el=> (<Post message={el.message} likesCount={el.likesCount}/>))}
             </div>
         </div>
     );
