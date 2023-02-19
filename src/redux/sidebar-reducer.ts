@@ -1,6 +1,6 @@
-import {ActionTypeAC} from "./state";
+let initialState = {}
 
- const sidebarReducer = (state:any, action:ActionTypeAC) =>{
+const sidebarReducer = (state = initialState, action: any) => {
 
     return state;
 }
