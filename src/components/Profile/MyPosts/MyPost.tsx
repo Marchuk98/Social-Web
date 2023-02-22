@@ -1,17 +1,10 @@
 import React, {ChangeEvent} from "react";
 import s from "./MyPost.module.css"
 import Post from "./Post/Post";
-import {PostType} from "../../../redux/profile-reducer";
+import {profileStateToProps} from "./MyPostContainer";
 
 
-type MyPostPropsType = {
-    addPost:()=> void
-    updateNewPostText:(newText: string)=>void
-    post:PostType[]
-    newPostText:string
-}
-
-const MyPost: React.FC<MyPostPropsType> = (props)=> {
+const MyPost = (props:profileStateToProps)=> {
 
     const addPost = () => {
             props.addPost();
@@ -25,14 +18,14 @@ const MyPost: React.FC<MyPostPropsType> = (props)=> {
             My post
             <div>
                 <div>
-                    <textarea onChange={onChangePostTextArea}  value={props.newPostText} />
+                    <textarea onChange={onChangePostTextArea}  value={props.statePostType.newPostText} />
                 </div>
                 <div>
                     <button onClick={addPost}>add post</button>
                 </div>
             </div>
             <div className={s.posts}>
-                {props.post.map(el=> (<Post message={el.message} likesCount={el.likesCount}/>))}
+                {props.statePostType.post.map(el=> (<Post message={el.message} likesCount={el.likesCount}/>))}
             </div>
         </div>
     );
