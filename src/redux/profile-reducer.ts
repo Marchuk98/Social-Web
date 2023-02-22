@@ -1,3 +1,5 @@
+import post from "../components/Profile/MyPosts/Post/Post";
+
 const ADD_POST = "ADD-POST";
 
 const updateNewPostText = "updateNewPostText";
@@ -6,7 +8,6 @@ export type ProfilePageType = {
     post: Array<PostType>
     newPostText: string
 }
-
 
 export type PostType = {
     id: number
@@ -27,17 +28,10 @@ let initialState: ProfilePageType = {
 const profileReducer = (state: ProfilePageType = initialState, action: ActionTypeAC) => {
     switch (action.type) {
         case "ADD-POST":
-            const newPost: PostType = {
-                id: new Date().getTime(),
-                message: state.newPostText,
-                likesCount: 5
-            };
-            state.post.push(newPost);
-            state.newPostText = '';
-            return state;
+            let newPostText = state.newPostText;
+            return {...state, newPostText: '', post:[...state.post, {id:state.post.length+1, message:newPostText,likesCount:15}]}
         case "updateNewPostText" :
-            state.newPostText = action.newText;
-            return state;
+            return {...state,newPostText:action.newText}
         default :
             return state;
     }
@@ -48,10 +42,9 @@ type ActionTypeAC = addPostACType | UpdateNewPostAC
 
 export type addPostACType = ReturnType<typeof addPostAC>;
 
-export const addPostAC = (newPostText: string) => {
+export const addPostAC = () => {
     return {
         type: ADD_POST,
-        newPostText: newPostText
     } as const
 }
 

@@ -18,7 +18,6 @@ export type DialogPageType = {
     newMessageBody: string
 }
 
-
 let initialState: DialogPageType = {
     dialogs: [
         {id: 1, name: 'Vladimir'},
@@ -43,18 +42,13 @@ let initialState: DialogPageType = {
 
 type ActionTypeAC = SendMessageACType | UpdateNewMessageACType
 
-const dialogsReducer = (state: DialogPageType = initialState, action: ActionTypeAC) => {
+const dialogsReducer = (state: DialogPageType = initialState, action: ActionTypeAC):DialogPageType => {
     switch (action.type) {
         case "updateMessageText" :
-            state.newMessageBody = action.newMessage;
-            return state;
+            return {...state, newMessageBody: action.newMessage}
         case 'SEND_MESSAGE':
-            let newMessage: MessageType = {
-                id: 6, message: state.newMessageBody
-            };
-            state.message.push(newMessage)
-            state.newMessageBody = '';
-            return state;
+            let body = state.newMessageBody
+            return {...state, newMessageBody:'', message:[...state.message, {id:state.message.length+1, message:body}]}
         default:
             return state
     }
@@ -63,10 +57,9 @@ const dialogsReducer = (state: DialogPageType = initialState, action: ActionType
 
 export type SendMessageACType = ReturnType<typeof SendMessageAC>
 
-export const SendMessageAC = (newMessageBody: string) => {
+export const SendMessageAC = () => {
     return {
-        type: SEND_MESSAGE,
-        newMessageBody: newMessageBody
+        type: SEND_MESSAGE
     } as const
 }
 
