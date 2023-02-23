@@ -25,7 +25,7 @@ const MyPost = (props:profileStateToProps)=> {
                 </div>
             </div>
             <div className={s.posts}>
-                {props.statePostType.post.map(el=> (<Post message={el.message} likesCount={el.likesCount}/>))}
+                {props.statePostType.post.map((el,index)=> (<Post key={index} message={el.message} likesCount={el.likesCount}/>))}
             </div>
         </div>
     );

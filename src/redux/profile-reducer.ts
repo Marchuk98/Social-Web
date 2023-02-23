@@ -1,5 +1,3 @@
-import post from "../components/Profile/MyPosts/Post/Post";
-
 const ADD_POST = "ADD-POST";
 
 const updateNewPostText = "updateNewPostText";
@@ -29,7 +27,7 @@ const profileReducer = (state: ProfilePageType = initialState, action: ActionTyp
     switch (action.type) {
         case "ADD-POST":
             let newPostText = state.newPostText;
-            return {...state, newPostText: '', post:[...state.post, {id:state.post.length+1, message:newPostText,likesCount:15}]}
+            return {...state, newPostText: '', post:[...state.post, {id:state.post.length+1, message:newPostText,likesCount:state.post.length+1}]}
         case "updateNewPostText" :
             return {...state,newPostText:action.newText}
         default :
