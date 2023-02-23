@@ -8,16 +8,12 @@ import {Provider} from "react-redux";
 
 
 const root = ReactDOM.createRoot( document.getElementById('root') as HTMLElement)
-export const renderEntireTree = () => {
     root.render(
             <Provider store={store}>
             <App/>
             </Provider>
     );
-}
 
-store.subscribe(renderEntireTree);
-renderEntireTree();
 
 
 
