@@ -9,7 +9,7 @@ export type UserPageType = {
 
 export type UserType = {
     id: number
-    photoUrl:string
+    photo:string
     name: string
     description: string
     location: LocationType
@@ -21,6 +21,10 @@ type LocationType = {
     city: string
 }
 
+// export type PhotoType = {
+//     small:string
+//     large:string
+// }
 
 let initialState: UserPageType = {
     users: []
