@@ -79,41 +79,41 @@ type ActionType =
     | setTotalUsersCountACType
     | toggleIsFetchingACType
 
-export type followACType = ReturnType<typeof followAC>
-export type unfollowACType = ReturnType<typeof unfollowAC>
-export type setUsersACType = ReturnType<typeof setUsersAC>
-export type setCurrentPageACType = ReturnType<typeof setCurrentPageAC>
-export type setTotalUsersCountACType = ReturnType<typeof setTotalUsersCountAC>
-export type toggleIsFetchingACType = ReturnType<typeof toggleIsFetchingAC>
+export type followACType = ReturnType<typeof follow>
+export type unfollowACType = ReturnType<typeof unfollow>
+export type setUsersACType = ReturnType<typeof setUsers>
+export type setCurrentPageACType = ReturnType<typeof setCurrentPage>
+export type setTotalUsersCountACType = ReturnType<typeof setTotalUsersCount>
+export type toggleIsFetchingACType = ReturnType<typeof toggleIsFetching>
 
-export const followAC = (userId: number) => {
+export const follow = (userId: number) => {
     return {
         type: FOLLOW,
         userId
     }as const
 }
-export const unfollowAC = (userId: number) => {
+export const unfollow = (userId: number) => {
     return {
         type: UNFOLLOW,
         userId
     }as const
 }
 
-export const setUsersAC = (users:UserType[])=> {
+export const setUsers = (users:UserType[])=> {
     return{
         type:SET_USERS,
         users
     }as const
 }
 
-export const setCurrentPageAC = (currentPage:number) => {
+export const setCurrentPage = (currentPage:number) => {
     return{
         type: SET_CURRENT_PAGE,
         currentPage
     }as const
 }
 
-export const setTotalUsersCountAC = (totalCount:number) => {
+export const setTotalUsersCount = (totalCount:number) => {
     return{
         type: SET_TOTAL_USER_COUNT,
         count:totalCount
@@ -121,7 +121,7 @@ export const setTotalUsersCountAC = (totalCount:number) => {
     }as const
 }
 
-export const toggleIsFetchingAC = (isFetching:boolean)=>{
+export const toggleIsFetching = (isFetching:boolean)=>{
     return{
         type:TOGGLE_IS_FETCHING,
         isFetching
