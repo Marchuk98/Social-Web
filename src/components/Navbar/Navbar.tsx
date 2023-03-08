@@ -16,6 +16,9 @@ const Navbar = () => {
                 <NavLink to="/news" className={`${s.item} ${path === '/news' ? s.activeLink : ''}`}>News</NavLink>
             </div>
             <div className={s.item}>
+                <NavLink to="/users" className={`${s.item} ${path === '/users' ? s.activeLink : ''}`}>Users</NavLink>
+            </div>
+            <div className={s.item}>
                 <NavLink to="/music" className={`${s.item} ${path === '/music' ? s.activeLink : ''}`}>Music</NavLink>
             </div>
             <div className={s.item}>
