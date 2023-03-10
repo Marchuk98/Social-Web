@@ -18,7 +18,10 @@ export type UserPageType = {
 
 export type UserType = {
     id: number
-    photo:string
+    photos: {
+        small: string,
+        large: string
+    },
     name: string
     description: string
     location: LocationType

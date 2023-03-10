@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {StoreType} from "../../redux/redux-store";
+import {AppRootState} from "../../redux/redux-store";
 import {
     follow,
     setCurrentPage,
@@ -20,8 +20,8 @@ class UsersContainer extends React.Component<usersStatePropsType> {
         axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPageUserPage}&count= ${this.props.pageSizeUserPage}`)
             .then(response => {
                 this.props.toggleIsFetching(false)
-            this.props.setUsers(response.data.items)
-            this.props.setTotalUsersCount(response.data.totalCount)
+                this.props.setUsers(response.data.items)
+                this.props.setTotalUsersCount(response.data.totalCount)
         });
     }
 
@@ -31,7 +31,7 @@ class UsersContainer extends React.Component<usersStatePropsType> {
         axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count= ${this.props.pageSizeUserPage}`)
             .then(response => {
                 this.props.toggleIsFetching(false)
-            this.props.setUsers(response.data.items)
+                this.props.setUsers(response.data.items)
         });
     }
 
@@ -73,7 +73,7 @@ type mapDispatchToPropType = {
 
  export type usersStatePropsType = mapStateToPropsType & mapDispatchToPropType
 
-const mapStateToProps = (state:StoreType):mapStateToPropsType => {
+const mapStateToProps = (state:AppRootState):mapStateToPropsType => {
     return {
         stateUserPage: state.userPage.users,
         pageSizeUserPage:state.userPage.pageSize,

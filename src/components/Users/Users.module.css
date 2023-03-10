@@ -1,10 +1,14 @@
-.userPhoto{
+.selectedPage{
+    font-weight: bold;
+}
 
- width: 80px !important;
+.ava{
+    width: 80px !important;
     height: 80px;
     border-radius: 20px;
 }
 
-.selectedPage{
-    font-weight: bold;
+.number {
+    padding: 15px 0 ;
+
 }

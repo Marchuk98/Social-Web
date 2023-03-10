@@ -27,16 +27,12 @@ const Users = (props:UsersPropsType) => {
 
     return (
         <div>
-
-            <div>
-                {pages.map((p,index) => {
-                    return <span key={index} onClick={(e)=>props.onPageChanged(p)} className={`${props.currentPageUserPage === p && s.selectedPage}`} >{p}</span>})}
-            </div>
-            {props.setUser.map(el => <div key={el.id}>
+            {
+                props.setUser.map(el => <div key={el.id}>
                 <span>
                     <div>
-                        <NavLink to={'/profile/' + el.id}>
-                        <img src={!el.photo ? userPhoto : el.photo} className={s.userPhoto} alt={'userPhoto'}/>
+                        <NavLink to={`/profile/${el.id}`}>
+                        <img className={s.ava} src={el.photos.large !== null ? el.photos.large : userPhoto} alt={'photo'}/>
                             </NavLink>
                     </div>
                     <div>
@@ -60,8 +56,18 @@ const Users = (props:UsersPropsType) => {
                          <div>{"el.location.city"}</div>
                     </span>
                 </span>
-            </div>)}
+            </div>
+                )}
+            <div className={s.number}>
+                {
+                    pages.map((p,index) =>
+                        <span key={index} className={props.currentPageUserPage === p ? s.selectedPage : ""}
+                            onClick={(e)=>{props.onPageChanged(p)}}>
+                            {p}</span>
+                    )}
+            </div>
         </div>
+
     );
 };
 
