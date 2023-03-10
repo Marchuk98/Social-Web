@@ -1,10 +1,12 @@
 const ADD_POST = "ADD-POST";
+const SET_USER_PROFILE = "SET_USER_PROFILE"
 
 const updateNewPostText = "updateNewPostText";
 
 export type ProfilePageType = {
-    post: Array<PostType>
+    post: PostType[]
     newPostText: string
+    profile:string
 }
 
 export type PostType = {
@@ -20,7 +22,8 @@ let initialState: ProfilePageType = {
         {id: 3, message: 'Hybrid theory', likesCount: 23},
         {id: 4, message: 'To be continued', likesCount: 75}
     ],
-    newPostText: 'it-kamasutra.com'
+    newPostText: 'it-kamasutra.com',
+    profile:''
 }
 
 const profileReducer = (state: ProfilePageType = initialState, action: ActionTypeAC) => {
@@ -30,12 +33,14 @@ const profileReducer = (state: ProfilePageType = initialState, action: ActionTyp
             return {...state, newPostText: '', post:[...state.post, {id:state.post.length+1, message:newPostText,likesCount:state.post.length+1}]}
         case "updateNewPostText" :
             return {...state,newPostText:action.newText}
+        case "SET_USER_PROFILE":
+            return {...state,profile:action.profile}
         default :
             return state;
     }
 }
 
-type ActionTypeAC = addPostACType | UpdateNewPostAC
+type ActionTypeAC = addPostACType | UpdateNewPostAC | setUserProfileAC
 
 
 export type addPostACType = ReturnType<typeof addPostAC>;
@@ -53,6 +58,15 @@ export const UpdateNewPostAC = (newText: string) => {
         type: updateNewPostText,
         newText: newText
     } as const
+}
+
+export type setUserProfileAC = ReturnType<typeof setUserProfile>
+
+export const setUserProfile = (profile:string) => {
+    return{
+        type: SET_USER_PROFILE,
+        profile
+    }as const
 }
 
 export default profileReducer;
