@@ -1,6 +1,7 @@
-const SET_USER_DATA = "SET_USER_DATA"
-// const UNFOLLOW = "UNFOLLOW"
+import {Dispatch} from "redux";
+import {authAPI} from "../api/api";
 
+const SET_USER_DATA = "SET_USER_DATA"
 
 type AuthType = {
     userId:null | number
@@ -44,4 +45,14 @@ export const setAuthUserData = (userId:number, email:string, login:string) => {
     } as const
 }
 
+export const getAuthUser = () =>{
+    return (dispatch:Dispatch<ActionType>) => {
+        authAPI.getAuth().then(response => {
+            if (response.data.resultCode === 0) {
+                let {id, login, email} = response.data.data
+                dispatch(setAuthUserData(id, login, email))
+            }
+        });
+    }
+}
 
