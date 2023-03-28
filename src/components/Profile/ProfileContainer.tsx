@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React from 'react';
 import Profile from "./Profile";
 import {connect} from "react-redux";
 import {getProfile, setUserProfile} from "../../redux/profile-reducer";
@@ -75,4 +75,4 @@ const mapStateToProps = (state:AppRootState):mapStateToPropsType => {
     }
 }
 
-export default compose<FC>(withAuthRedirect, withRouter, connect(mapStateToProps, {setUserProfile, getProfile}))(ProfileContainer);
+export default compose<React.ComponentType>(withAuthRedirect, withRouter, connect(mapStateToProps, {setUserProfile, getProfile}))(ProfileContainer);
