@@ -1,9 +1,9 @@
+import { v1 } from "uuid";
+
 const SEND_MESSAGE = "SEND_MESSAGE";
 
-const updateMessageText = "updateMessageText"
-
 export type MessageType = {
-    id: number
+    id: string
     message: string
 }
 
@@ -15,7 +15,6 @@ export type DialogType = {
 export type DialogPageType = {
     dialogs: Array<DialogType>
     message: Array<MessageType>
-    newMessageBody: string
 }
 
 let initialState: DialogPageType = {
@@ -29,45 +28,33 @@ let initialState: DialogPageType = {
         {id: 7, name: 'Svetlana'}
     ],
     message: [
-        {id: 1, message: 'Hello'},
-        {id: 2, message: 'How are your'},
-        {id: 3, message: 'Normal'},
-        {id: 4, message: 'Yo'},
-        {id: 5, message: 'What'}
+        {message: 'Hello',id: v1()},
+        {message: 'How are your',id: v1()},
+        {message: 'Normal',id: v1()},
+        {message: 'Yo',id: v1()},
+        {message: 'What',id: v1()}
 
     ],
-    newMessageBody: "Text"
 }
 
 
-type ActionTypeAC = SendMessageACType | UpdateNewMessageACType
+type ActionTypeAC = SendNewMessageACType
 
 const dialogsReducer = (state: DialogPageType = initialState, action: ActionTypeAC):DialogPageType => {
     switch (action.type) {
-        case "updateMessageText" :
-            return {...state, newMessageBody: action.newMessage}
-        case 'SEND_MESSAGE':
-            let body = state.newMessageBody
-            return {...state, newMessageBody:'', message:[...state.message, {id:state.message.length+1, message:body}]}
+        case "SEND_MESSAGE" :{
+            return { ...state, message: [...state.message, { message: action.newMessage, id: v1()}] };
+            }
         default:
             return state
     }
 };
 
+export type SendNewMessageACType = | ReturnType<typeof SendNewMessageAC>
 
-export type SendMessageACType = ReturnType<typeof SendMessageAC>
-
-export const SendMessageAC = () => {
+export const SendNewMessageAC = (newMessage: string) => {
     return {
-        type: SEND_MESSAGE
-    } as const
-}
-
-export type UpdateNewMessageACType = | ReturnType<typeof UpdateNewMessageAC>
-
-export const UpdateNewMessageAC = (newMessage: string) => {
-    return {
-        type: updateMessageText,
+        type: SEND_MESSAGE,
         newMessage: newMessage
     } as const
 }

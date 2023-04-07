@@ -1,44 +1,72 @@
 import {Dispatch} from "redux";
+import { v1 } from "uuid";
 import {profileAPI} from "../api/api";
 
 const ADD_POST = "ADD-POST";
 const SET_USER_PROFILE = "SET_USER_PROFILE"
-const updateNewPostText = "updateNewPostText";
 const SET_STATUS = "SET_STATUS"
 
 
 export type ProfilePageType = {
     post: PostType[]
     newPostText: string
-    profile:string
+    profile:ProfileType | null
     status:string
 }
 
+export type ProfileType = {
+    "aboutMe": string
+    "contacts": ProfileContactType
+    "lookingForAJob": boolean
+    "lookingForAJobDescription": string,
+    "fullName": string,
+    "userId": number,
+    "photos": {
+        "small": string,
+        "large": string
+    }
+}
+
+type ProfileContactType = {
+    "facebook": string,
+    "website": string | null,
+    "vk": string,
+    "twitter": string,
+    "instagram": string,
+    "youtube": string | null,
+    "github": string,
+    "mainLink": string | null
+}
+
 export type PostType = {
-    id: number
+    id: string
     message: string
     likesCount: number
 }
 
 let initialState: ProfilePageType = {
     post: [
-        {id: 1, message: 'Hi, how are you?', likesCount: 32},
-        {id: 2, message: 'It\'s my first post', likesCount: 45},
-        {id: 3, message: 'Hybrid theory', likesCount: 23},
-        {id: 4, message: 'To be continued', likesCount: 75}
+        {id: v1(), message: 'Hi, how are you?', likesCount: 32},
+        {id: v1(), message: 'It\'s my first post', likesCount: 45},
+        {id: v1(), message: 'Hybrid theory', likesCount: 23},
+        {id: v1(), message: 'To be continued', likesCount: 75}
     ],
     newPostText: 'it-kamasutra.com',
-    profile:'',
+    profile:null,
     status:''
 }
 
 const profileReducer = (state: ProfilePageType = initialState, action: ActionType) => {
     switch (action.type) {
-        case "ADD-POST":
-            let newPostText = state.newPostText;
-            return {...state, newPostText: '', post:[...state.post, {id:state.post.length+1, message:newPostText,likesCount:state.post.length+1}]}
-        case "updateNewPostText" :
-            return {...state,newPostText:action.newText}
+        case "ADD-POST":{
+            let newPost: PostType = {
+                id: v1(),
+                message: action.newPostText,
+                likesCount: 0,
+            }
+            return {
+                ...state,post:[...state.post, newPost]}
+            }
         case "SET_USER_PROFILE":
             return {...state,profile:action.profile}
         case "SET_STATUS":
@@ -48,29 +76,21 @@ const profileReducer = (state: ProfilePageType = initialState, action: ActionTyp
     }
 }
 
-type ActionType = addPostACType | UpdateNewPostAC | setUserProfileAC | setStatusProfileType
+type ActionType = addPostACType | setUserProfileAC | setStatusProfileType
 
 
 export type addPostACType = ReturnType<typeof addPostAC>;
 
-export const addPostAC = () => {
+export const addPostAC = (newPostText:string) => {
     return {
         type: ADD_POST,
-    } as const
-}
-
-export type UpdateNewPostAC = ReturnType<typeof UpdateNewPostAC>
-
-export const UpdateNewPostAC = (newText: string) => {
-    return {
-        type: updateNewPostText,
-        newText: newText
+        newPostText
     } as const
 }
 
 export type setUserProfileAC = ReturnType<typeof setUserProfile>
 
-export const setUserProfile = (profile:string) => {
+export const setUserProfile = (profile:ProfileType) => {
     return{
         type: SET_USER_PROFILE,
         profile
