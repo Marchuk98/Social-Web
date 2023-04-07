@@ -15,9 +15,8 @@ const ProfileInfo:React.FC<ProfilePropsType> = (props) => {
     return (
         <div>
             <div className={s.DescriptionBlock}>
-                <img src={props.profile.photos.large === null ? userPhoto : props.profile.photos.large} alt={'photo'}/>
-                <div>{props.profile.fullname}</div>
-                ava + des
+                <img src={props.profile.photos.small === null ? userPhoto : props.profile.photos.small} alt={'photo'}/>
+                <div>{props.profile.fullName}</div>
                 <ProfileStatus status={props.status} updateStatus={props.updateStatus}/>
             </div>
         </div>

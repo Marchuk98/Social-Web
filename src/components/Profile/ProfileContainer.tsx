@@ -1,7 +1,7 @@
 import React from 'react';
 import Profile from "./Profile";
 import {connect} from "react-redux";
-import {getProfile, getStatus, setUserProfile, updateStatus} from "../../redux/profile-reducer";
+import {getProfile, getStatus, ProfileType, setUserProfile, updateStatus} from "../../redux/profile-reducer";
 import {AppRootState} from "../../redux/redux-store";
 import {
     useLocation,
@@ -12,8 +12,6 @@ import {
 import { RouteComponentProps } from 'react-router';
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
-
-
 
 function withRouter(Component: any) {
     function ComponentWithRouterProp(props:any) {
@@ -31,14 +29,13 @@ function withRouter(Component: any) {
     return ComponentWithRouterProp;
 }
 
-
 type PathParamsType = {
     userId: string
 }
 
 type mapStateToPropsType = {
-    profile: any
-    status:string
+    profile: ProfileType | null
+    status:string | null
     isAuth: boolean
 }
 
