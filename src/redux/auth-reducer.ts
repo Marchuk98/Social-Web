@@ -1,7 +1,6 @@
 import {Dispatch} from "redux";
 import {authAPI} from "../api/api";
-import {ThunkAction} from "redux-thunk";
-import {AppRootState} from "./redux-store";
+import {ThunkType} from "./redux-store";
 import {FormAction, stopSubmit} from "redux-form";
 
 const SET_USER_DATA = "SET_USER_DATA"
@@ -21,10 +20,7 @@ let initialState: AuthType = {
     isAuth: false
 }
 
-export type ThunkType = ThunkAction<void, AppRootState, unknown, ActionType>
-// export type ThunkDispatchType = ThunkDispatch<AppRootState, unknown, ActionType | FormAction>
-
-export const authReducer = (state = initialState, action: ActionType): AuthType => {
+export const authReducer = (state = initialState, action: authActionType): AuthType => {
     switch (action.type) {
         case SET_USER_DATA: {
             return {...state, ...action.payload}
@@ -35,9 +31,9 @@ export const authReducer = (state = initialState, action: ActionType): AuthType 
 }
 
 
-type ActionType = setUserDataType | FormAction
-
-type setUserDataType = ReturnType<typeof setAuthUserData>
+export type authActionType =
+    | ReturnType<typeof setAuthUserData>
+    | FormAction
 
 export const setAuthUserData = (userId: number | null, login: string | null, email: string | null, isAuth: boolean) => {
     return {
@@ -60,6 +56,7 @@ export const getAuthUser = () =>{
                 dispatch(setAuthUserData(userId ,login, email,true))
             }
         });
+        return "yo"
     }
 }
 
