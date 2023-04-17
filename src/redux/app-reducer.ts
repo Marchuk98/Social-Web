@@ -3,11 +3,15 @@ import {ThunkType} from "./redux-store";
 
 const SET_INITIALIZED_SUCCESS = "SET_INITIALIZED_SUCCESS"
 
-let initialState = {
+type InitialStateType = {
+    initialized: boolean
+}
+
+let initialState:InitialStateType = {
     initialized:false
 }
 
-export const appReducer = (state = initialState ,action:appActionType) => {
+export const appReducer = (state = initialState ,action:appActionType):InitialStateType => {
     switch (action.type) {
         case SET_INITIALIZED_SUCCESS: {
             return {...state,initialized: true}
@@ -19,10 +23,12 @@ export const appReducer = (state = initialState ,action:appActionType) => {
 
 export type appActionType = | ReturnType<typeof initializedSuccess>
 
-export const initializedSuccess = (initialized:boolean) => ({type:SET_INITIALIZED_SUCCESS,initialized}as const)
+export const initializedSuccess = () => ({type:SET_INITIALIZED_SUCCESS}as const)
 
 
 export const initializedApp = ():ThunkType => (dispatch) => {
-     dispatch(getAuthUser())
-    debugger
+    let promise = dispatch(getAuthUser())
+    promise.then(()=> {
+        dispatch(initializedSuccess())
+    })
 }

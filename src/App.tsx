@@ -11,18 +11,24 @@ import ProfileContainer from "./components/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import Login from "./components/Login/Login";
 import {connect} from "react-redux";
-import {getAuthUser, logout} from "./redux/auth-reducer";
-import {withRouter} from "./components/withRouter";
+import {logout} from "./redux/auth-reducer";
+// import {withRouter} from "./components/withRouter";
 import {compose} from "redux";
+import {initializedApp} from "./redux/app-reducer";
+import {AppRootState} from "./redux/redux-store";
+import Preloader from "./components/common/Preloader/Preloader";
 
 
-class App extends React.Component {
+class App extends React.Component<AppPropsType>{
 
-    // componentDidMount() {
-    //     this.props.getAuthUser()
-    // }
+    componentDidMount() {
+        this.props.initializedApp()
+    }
 
     render() {
+        if(!this.props.initialized){
+            return <Preloader/>
+        }
         return (
             <BrowserRouter>
                 <div className='app-wrapper'>
@@ -31,8 +37,7 @@ class App extends React.Component {
                     <div className='app-wrapper-content'>
                         <Routes>
                             <Route path='/login' element={<Login/>}/>
-                            <Route path='/profile' element={<ProfileContainer/>}/>
-                            <Route path='/profile/:userId/' element={<ProfileContainer/>}/>
+                            <Route path='/profile/:userId?' element={<ProfileContainer />}/>
                             <Route path='/users' element={<UsersContainer/>}/>
                             <Route path='/dialogs' element={<DialogsContainer/>}/>
                             <Route path='/news' element={<News/>}/>
@@ -50,20 +55,19 @@ class App extends React.Component {
 }
 
 type mapStateToProps = {
-    initialized:boolean
+    initialized: boolean
 }
 type mapDispatchToProps = {
-    initialized:() => void
+    initializedApp: () => void
 }
 
-export type authStatePropsType = mapStateToProps & mapDispatchToProps
+export type AppPropsType = mapStateToProps & mapDispatchToProps
 
-// const mapStateToProps = (state: AppRootState): mapStateToProps => {
-//     // return {
-//     //
-//     // }
-// }
+const mapStateToProps = (state: AppRootState): mapStateToProps => {
+    return {
+        initialized: state.app.initialized
+    }
+}
 
 
-
-export default compose<React.ComponentType>(withRouter,connect(null, {getAuthUser,logout}))(App);
+export default compose<React.ComponentType>( connect(mapStateToProps, {initializedApp, logout}))(App);

@@ -1,17 +1,17 @@
 import {useParams} from "react-router-dom";
 import React, {ComponentType} from "react";
 
-export function withRouter<T>(Component: ComponentType<T>) {
-    function ComponentWithRouterProp(props:any) {
+function withRouter<T>(Component: ComponentType<T>) {
+    function ComponentWithRouterProp(props:T) {
         let params = useParams();
         return (
-            <Component{...props} router={{ params }}/>
+            <Component{...props} params={ params }/>
         );
     }
 
     return ComponentWithRouterProp;
 }
 
-export type  WithRouterType<P> = {
+type  WithRouterType<P> = {
     params: P
 }

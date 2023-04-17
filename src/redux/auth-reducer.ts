@@ -47,18 +47,15 @@ export const setAuthUserData = (userId: number | null, login: string | null, ema
     } as const
 }
 
-export const getAuthUser = () =>{
-    return (dispatch:Dispatch) => {
-        authAPI.me()
+export const getAuthUser = () => (dispatch:Dispatch) => {
+       return authAPI.me()
             .then(response => {
             if (response.data.resultCode === 0) {
                 let {userId, login, email} = response.data.data
                 dispatch(setAuthUserData(userId ,login, email,true))
             }
         });
-        return "yo"
     }
-}
 
 export const login = (email:string,password:string,rememberMe:boolean):ThunkType  => {
     return (dispatch) => {
