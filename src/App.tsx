@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import Navbar from "./components/Navbar/Navbar";
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import {Routes, Route, BrowserRouter} from 'react-router-dom'
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
@@ -12,11 +12,11 @@ import HeaderContainer from "./components/Header/HeaderContainer";
 import Login from "./components/Login/Login";
 import {connect} from "react-redux";
 import {logout} from "./redux/auth-reducer";
-// import {withRouter} from "./components/withRouter";
 import {compose} from "redux";
 import {initializedApp} from "./redux/app-reducer";
 import {AppRootState} from "./redux/redux-store";
 import Preloader from "./components/common/Preloader/Preloader";
+import {withRouter} from "./components/withRouter";
 
 
 class App extends React.Component<AppPropsType>{
@@ -70,4 +70,4 @@ const mapStateToProps = (state: AppRootState): mapStateToProps => {
 }
 
 
-export default compose<React.ComponentType>( connect(mapStateToProps, {initializedApp, logout}))(App);
+export default compose<React.ComponentType>(withRouter, connect(mapStateToProps, {initializedApp, logout}))(App);
