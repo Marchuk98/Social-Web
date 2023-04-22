@@ -30,7 +30,6 @@ type ContentPropsType = WithRouterType<ProfileParamsType> & mapStateToPropsType 
 class ProfileContainer extends React.Component<ContentPropsType>{
 
     componentDidMount() {
-        debugger
         let userId = this.props.params.userId
         if(!userId){
             // @ts-ignore
