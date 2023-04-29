@@ -12,7 +12,7 @@ type AddNewPostProfileType = {
 
 const maxLength10 = maxLengthCreator(10)
 
-const MyPost = (props:profileStateToProps)=> {
+const MyPost = React.memo((props:profileStateToProps)=> {
 
     const addPostText = (value:AddNewPostProfileType) => {
             props.addPost(value.newPostText);
@@ -25,7 +25,7 @@ const MyPost = (props:profileStateToProps)=> {
             </div>
         </div>
     );
-}
+})
 
 
 
