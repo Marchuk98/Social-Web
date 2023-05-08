@@ -3,6 +3,7 @@ import {v1} from "uuid";
 import {profileAPI} from "../api/api";
 
 const ADD_POST = "ADD-POST";
+const DELETE_POST = "DELETE-POST";
 const SET_USER_PROFILE = "SET_USER_PROFILE"
 const SET_STATUS = "SET_STATUS"
 
@@ -68,6 +69,9 @@ const profileReducer = (state: ProfilePageType = initialState, action: profileAc
                 ...state, post: [...state.post, newPost]
             }
         }
+        case "DELETE-POST":{
+            return {...state,post: state.post.filter(el=> el.id !== action.postId)}
+        }
         case "SET_USER_PROFILE":
             return {...state, profile: action.profile}
         case "SET_STATUS":
@@ -107,8 +111,10 @@ export type profileActionType =
     | ReturnType<typeof addPostAC>
     | ReturnType<typeof setUserProfile>
     | ReturnType<typeof setStatusProfile>
+    | ReturnType<typeof deletePost>
 
 export const addPostAC = (newPostText: string) => ({type: ADD_POST, newPostText} as const)
+export const deletePost = (postId: string) => ({type: DELETE_POST, postId} as const)
 export const setUserProfile = (profile: ProfileType) => ({type: SET_USER_PROFILE, profile} as const)
 export const setStatusProfile = (status: string) => ({type: SET_STATUS, status} as const)
 
