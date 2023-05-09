@@ -50,11 +50,7 @@ const dialogsReducer = (state: DialogPageType = initialState, action: dialogsAct
 
 export type dialogsActionType = | ReturnType<typeof SendNewMessageAC>
 
-export const SendNewMessageAC = (newMessage: string) => {
-    return {
-        type: SEND_MESSAGE,
-        newMessage: newMessage
-    } as const
-}
+export const SendNewMessageAC = (newMessage: string) => ({type: SEND_MESSAGE, newMessage: newMessage}) as const
+
 
 export default dialogsReducer;

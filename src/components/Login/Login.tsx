@@ -1,83 +1,63 @@
 import React from 'react';
-import {Field, InjectedFormProps, reduxForm} from "redux-form";
-import {Input} from "../common/FormsControls/FormsControls";
-import {required} from "../../utils/validators/validators";
-import {connect} from "react-redux";
-import {login} from "../../redux/auth-reducer";
-import {AppRootState} from "../../redux/redux-store";
+import {useSelector} from "react-redux";
+import {AppRootState, useAppDispatch} from "../../redux/redux-store";
 import { Navigate as Redirect } from 'react-router-dom';
+import {SubmitHandler, useForm} from "react-hook-form";
+import {login} from "../../redux/auth-reducer";
 import styles from '../common/FormsControls/FormsControls.module.css'
 
 
-
-type LoginFormType = {
-    email:string
-    password:string
-    rememberMe:boolean
+export type InputsType = {
+    email: string
+    password: string
+    rememberMe: boolean
 }
 
-export const LoginForm:React.FC<InjectedFormProps<LoginFormType>> = (props) => {
+export const Login = () => {
+    const isAuth = useSelector<AppRootState, boolean>(state => state.auth.isAuth)
+
+    if (isAuth) return <Redirect to={'/profile'}/>
+
     return (
-        <div>
-            <form onSubmit={props.handleSubmit}>
-                <div>
-                    <Field  name={"email"} placeholder={"Email"} component={Input} autoComplete="current-login"
-                    validate={[required]}/>
-                </div>
-                <div>
-                    <Field type={'password'} name={"password"} placeholder={"Password"} component={Input} autoComplete="current-password" validate={[required]}/>
-                </div>
-                <div>
-                    <Field type={'checkbox'} name={"rememberMe"} component={Input}/> remember me
-                </div>
-                { props.error && <div className={styles.formSummaryError}>
-                    {props.error}
-                </div>}
-                <div>
-                    <button>Login</button>
-                </div>
-            </form>
+        <div className={styles.login_page_wrapper}>
+            <h3>Sign in</h3>
+            <LoginForm/>
         </div>
     );
 };
 
-const LoginReduxForm = reduxForm<LoginFormType>({form:'login'})(LoginForm)
+const LoginForm = () => {
+    const {register, handleSubmit, formState: {errors}} = useForm<InputsType>({
+        mode: "onBlur"
+    })
+    const dispatch = useAppDispatch()
 
-type mapStateToPropsType = {
-    isAuth:boolean
-}
-
-type mapDispatchToPropsType = {
-    login:(email:string,password:string,rememberMe:boolean) => void
-}
-
-export type LoginPropsType = mapStateToPropsType & mapDispatchToPropsType
-
-const mapStateToProps = (state: AppRootState) => {
-    return {
-        isAuth:state.auth.isAuth
-    }
-}
-
-
-
- const Login:React.FC<LoginPropsType> = (props) => {
-
-    const onSubmitHandler = (formData: LoginFormType) => {
-        console.log(formData)
-            props.login(formData.email, formData.password, formData.rememberMe)
-    }
-
-    if(props.isAuth){
-        return <Redirect to={"/profile"}/>
+    const onSubmit: SubmitHandler<InputsType> = (loginData) => {
+        dispatch(login(loginData.email, loginData.password, loginData.rememberMe))
     }
 
     return (
-        <div>
-            <h1>Login</h1>
-            <LoginReduxForm onSubmit={onSubmitHandler}/>
-        </div>
+        <form className={styles.loginForm_wrapper} onSubmit={handleSubmit(onSubmit)}>
+            <label> Login name <input className={styles.input}
+                                      {...register('email', {required: 'email field is required'})}
+                                      placeholder={'login'}
+                                      type="text"/>
+            </label>
+            {errors.email && <span className={styles.validation_error}>{errors?.email?.message
+                ? errors.email.message : 'error!'
+            }</span>}
+            <label>Password <input className={`${styles.input} ${styles.input_margin}`}
+                                   {...register('password', {required: 'password field is required'})}
+                                   placeholder={'password'}
+                                   type="password"/>
+            </label>
+            {errors.password && <span className={styles.validation_error}>{errors?.password?.message
+                ? errors.password.message : 'error!'
+            }</span>}
+            <div className={styles.bthCheckBlock}>
+            <label>Remember me <input type="checkbox" {...register('rememberMe')}/></label>
+            <button type={"submit"} >Submit</button>
+            </div>
+        </form>
     )
 }
-
-export default connect(mapStateToProps, {login})(Login)

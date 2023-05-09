@@ -1,6 +1,5 @@
 import React, { FC, ReactNode } from 'react';
 import { WrappedFieldProps } from "redux-form/lib/Field";
-import styles from './FormsControls.module.css';
 
 type FormsControlsType = {
     formType: 'input' | 'textarea' | 'checkbox';
@@ -13,7 +12,7 @@ type FormControlProps = WrappedFieldProps & FormsControlsType & {
 const FormControl: FC<FormControlProps> = ({ input, meta, children, formType = 'input', ...restProps }) => {
     const hasError = meta.touched && meta.error;
     return (
-        <div className={`${styles.formControl} ${hasError ? styles.error : ''}`}>
+        <div>
             <div>
                 {children}
             </div>

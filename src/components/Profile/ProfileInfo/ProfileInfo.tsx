@@ -6,8 +6,6 @@ import {ProfilePropsType} from "../Profile";
 import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
 
 
-
-
 const ProfileInfo:React.FC<ProfilePropsType> = (props) => {
     if(!props.profile){
         return <Preloader/>
@@ -15,7 +13,7 @@ const ProfileInfo:React.FC<ProfilePropsType> = (props) => {
     return (
         <div>
             <div className={s.DescriptionBlock}>
-                <img src={props.profile.photos.small === null ? userPhoto : props.profile.photos.small} alt={'photo'}/>
+                <img src={props.profile.photos.large === null ? userPhoto : props.profile.photos.large} alt={'photo'}/>
                 <div>{props.profile.fullName}</div>
                 <ProfileStatusWithHooks status={props.status} updateStatus={props.updateStatus}/>
             </div>

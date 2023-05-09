@@ -1,5 +1,5 @@
 import {getAuthUser} from "./auth-reducer";
-import {ThunkType} from "./redux-store";
+import {AppThunkType} from "./redux-store";
 
 const SET_INITIALIZED_SUCCESS = "SET_INITIALIZED_SUCCESS"
 
@@ -26,7 +26,7 @@ export type appActionType = | ReturnType<typeof initializedSuccess>
 export const initializedSuccess = () => ({type:SET_INITIALIZED_SUCCESS}as const)
 
 
-export const initializedApp = ():ThunkType => (dispatch) => {
+export const initializedApp = ():AppThunkType => (dispatch) => {
     let promise = dispatch(getAuthUser())
     promise.then(()=> {
         dispatch(initializedSuccess())

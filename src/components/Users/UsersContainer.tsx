@@ -24,11 +24,13 @@ import {
 class UsersContainer extends React.Component<usersStatePropsType> {
 
     componentDidMount() {
-        this.props.getUsers(this.props.currentPageUserPage, this.props.pageSizeUserPage)
+        const {currentPageUserPage,pageSizeUserPage} = this.props
+        this.props.getUsers(currentPageUserPage,pageSizeUserPage)
     }
 
     onPageChanged = (pageNumber: number) => {
-        this.props.getUsers(pageNumber, this.props.pageSizeUserPage)
+        const {pageSizeUserPage} = this.props
+        this.props.getUsers(pageNumber, pageSizeUserPage)
     }
 
     render() {
