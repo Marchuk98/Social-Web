@@ -15,9 +15,11 @@ export const usersAPI = {
 
     follow: (id: number) => {
         return instance.post(`follow/${id}`)
+            .then(res => res.data)
     },
     unfollow: (id: number) => {
         return instance.delete(`follow/${id}`)
+            .then(res => res.data)
     }
 }
 
@@ -35,13 +37,13 @@ export const profileAPI = {
 }
 
 export const authAPI = {
-    me () {
+    me() {
         return instance.get(`auth/me`)
     },
-    login (email: string, password: string, rememberMe: boolean = false) {
+    login(email: string, password: string, rememberMe: boolean = false) {
         return instance.post(`auth/login`, {email, password, rememberMe})
     },
-    logout () {
+    logout() {
         return instance.delete(`auth/login`)
     }
 }

@@ -111,16 +111,25 @@ export const getUsers = (page: number, pageSizeUserPage: number) => async (dispa
     dispatch(setTotalUsersCount(data.totalCount))
 }
 
-export const followUnfollowFlow = async (dispatch:Dispatch, userId:number,apiMethod:any,actionCreator:any) => {
+type apiMethodType = {
+    data: {}
+    fieldsErrors: []
+    messages: []
+    resultCode: number
+}
+
+export const followUnfollowFlow = async (dispatch:Dispatch, userId:number,apiMethod:(userId:number)=> Promise<apiMethodType>,actionCreator:(userId:number)=> userActionType ) => {
     dispatch(toggleFollowingInProgress(true, userId))
     let response = await apiMethod(userId)
-    if (response.data.resultCode === 0) {
+    if (response.resultCode === 0) {
         dispatch(actionCreator(userId))
     }
     dispatch(toggleFollowingInProgress(false, userId))
 }
 
+
 export const follow = (userId: number) => async (dispatch: Dispatch) => {
+
     followUnfollowFlow(dispatch,userId,usersAPI.follow.bind(usersAPI),followSuccess)
 }
 

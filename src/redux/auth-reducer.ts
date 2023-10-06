@@ -5,7 +5,7 @@ import {stopSubmit} from "redux-form";
 
 
 
-const SET_USER_DATA = "SET_USER_DATA"
+const SET_USER_DATA = 'samurai-network/auth/SET_USER_DATA'
 
 export type AuthType = {
     id: number | null
@@ -38,7 +38,7 @@ export type authActionType =
 
 export const setAuthUserData = (id: number | null, login: string | null, email: string | null, isAuth: boolean) => {
     return {
-        type: "SET_USER_DATA",
+        type: SET_USER_DATA,
         payload: {
             id,
             login,
