@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {compose} from "redux";
 import {AppRootState} from "../../redux/redux-store";
 import Profile from "./Profile";
-import { Navigate as Redirect } from "react-router-dom";
+import {Navigate, Navigate as Redirect} from "react-router-dom";
 import {getProfile, getStatus, ProfileType, setUserProfile, updateStatus} from "../../redux/profile-reducer";
 
 type mapStateToPropsType = {
@@ -16,33 +16,44 @@ type mapStateToPropsType = {
 
 type mapDispatchToPropType = {
     setUserProfile:(profile:string) => void
-    getProfile:(userId:string) => void
-    getStatus:(userId:string) => void
+    getProfile:(userId:number) => void
+    getStatus:(userId:number) => void
     updateStatus: (status: string) => void
 }
 
 type ProfileParamsType = {
-    userId: string
+    userId: number | null
 }
 
 type ContentPropsType = WithRouterType<ProfileParamsType> & mapStateToPropsType & mapDispatchToPropType
 
 class ProfileContainer extends React.Component<ContentPropsType>{
 
+    state = {
+        redirect: false,
+    };
+
     componentDidMount() {
-        let userId = this.props.params.userId
-        if(!userId){
-            // @ts-ignore
-            userId = this.props.autorizedUserId
-            if (!userId){
-                return <Redirect to={'/login'}/>
+        let userId = this.props.params.userId;
+        if (!userId) {
+            userId = this.props.autorizedUserId;
+            if (!userId) {
+                this.setState({ redirect: true });
             }
         }
-        this.props.getProfile(userId)
-        this.props.getStatus(userId)
+
+        if (userId) {
+            this.props.getProfile(userId);
+            this.props.getStatus(userId);
+        }
     }
 
     render() {
+
+        if (this.state.redirect) {
+            return <Navigate to={'/login'} />;
+        }
+
         return (
             <div>
                 <Profile {...this.props} status={this.props.status} profile={this.props.profile} updateStatus={this.props.updateStatus}/>
